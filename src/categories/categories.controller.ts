@@ -1,5 +1,4 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
 @Controller('categories')
