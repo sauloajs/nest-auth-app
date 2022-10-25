@@ -25,7 +25,7 @@ export class BooksService {
   }
 
   update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+    return `This action updates a #${id} book ${updateBookDto.name}`;
   }
 
   async remove(id: number): Promise<void> {
