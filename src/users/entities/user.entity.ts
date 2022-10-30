@@ -1,4 +1,11 @@
-import { Column, Entity, Generated, PrimaryGeneratedColumn } from 'typeorm';
+import { Book } from 'src/books/entities/book.entity';
+import {
+  Column,
+  Entity,
+  Generated,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -17,4 +24,7 @@ export class User {
 
   @Column()
   name: string;
+
+  @OneToMany(() => Book, (book) => book.user)
+  books: Book[];
 }

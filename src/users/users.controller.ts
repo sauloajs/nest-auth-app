@@ -1,5 +1,5 @@
-import { Body, Controller, HttpStatus, Post, Req, Res } from '@nestjs/common';
-import { checkHash, generateHashString } from 'src/utils/hash';
+import { Body, Controller, Post } from '@nestjs/common';
+import { generateHashString } from 'src/utils/hash';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 
@@ -13,19 +13,8 @@ export class UsersController {
       str: createUserDto.password,
     });
 
-    this.usersService.create({
-      ...createUserDto,
-      password,
-      username: createUserDto.email,
-    });
-  }
+    createUserDto.password = password;
 
-  @Post('check')
-  async Check(@Body() body) {
-    const isMatch = await checkHash({
-      str: body.password,
-      hash: '$2b$08$40AyAJCA7nS8fgU5a1MZG.cHFUA.a7gbjCoP79Ukoq8xI.5aLl/lu',
-    });
-    return isMatch;
+    this.usersService.create(createUserDto);
   }
 }

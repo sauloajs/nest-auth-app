@@ -4,16 +4,29 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { Book } from './entities/book.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class BooksService {
   constructor(
     @InjectRepository(Book)
     private booksRepository: Repository<Book>,
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>,
   ) {}
 
-  create(createBookDto: CreateBookDto) {
-    return this.booksRepository.save(createBookDto);
+  async create(userId: number, createBookDto: CreateBookDto) {
+    const newBook = await this.booksRepository.save(createBookDto);
+    const user = await this.usersRepository.findOne({
+      where: {
+        id: userId.toString(),
+      },
+      relations: ['books'],
+    });
+
+    user.books.push(newBook);
+
+    await this.usersRepository.save(user);
   }
 
   findAll(): Promise<Book[]> {
