@@ -29,8 +29,13 @@ export class BooksService {
     await this.usersRepository.save(user);
   }
 
-  findAll(): Promise<Book[]> {
-    return this.booksRepository.find();
+  async findAll(userId: number): Promise<Book[]> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId.toString() },
+      relations: ['books'],
+    });
+
+    return user.books;
   }
 
   findOne(id: number): Promise<Book> {

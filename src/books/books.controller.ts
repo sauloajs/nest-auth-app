@@ -27,8 +27,9 @@ export class BooksController {
   }
 
   @Get()
-  findAll() {
-    return this.booksService.findAll();
+  findAll(@Req() req) {
+    const { userId } = req.user;
+    return this.booksService.findAll(userId);
   }
 
   @Get(':id')
